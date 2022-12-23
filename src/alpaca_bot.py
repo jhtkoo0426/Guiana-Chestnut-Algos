@@ -4,6 +4,10 @@ from alpaca.trading.enums import OrderSide, TimeInForce
 
 
 class AlpacaAPIConnection():
+    """
+    Class responsible for connecting to the Alpaca API.
+    """
+
     def __init__(self):
         # Initialize trading client for Alpaca API
         API_KEY     = "PKKL587HXXS43RUJ8SFL"
@@ -11,6 +15,7 @@ class AlpacaAPIConnection():
         
         self.client  = TradingClient(api_key=API_KEY, secret_key=SECRET_KEY, paper=True)
         self.account = self.client.get_account()
+
 
     # Account-related details
     def _get_account_status(self):
@@ -34,6 +39,7 @@ class AlpacaAPIConnection():
     def _get_account_short_market_value(self):
         return self.account.short_market_value
     
+
     # Trading-related functions
     def account_place_buy_order(self, symbol: str, quantity, type='market', time_in_force=TimeInForce.GTC):
         market_order_buy_data = MarketOrderRequest(
@@ -64,9 +70,22 @@ class AlpacaAPIConnection():
             if position['symbol'].upper() == symbol.upper():
                 return position
         return None
+
+
+class StockScanner():
+    """
+    Class responsible for processing realtime and historic stock data.
+    """
+
+    def __init__(self):
+        pass
     
 
-class Bot(AlpacaAPIConnection):
+class Bot(AlpacaAPIConnection, StockScanner):
+    """
+    Trading bot class to formulate strategies and make market orders.
+    """
+
     def __init__(self):
         super().__init__()
 
